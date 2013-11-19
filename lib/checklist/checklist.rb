@@ -1,0 +1,33 @@
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+module Checklist
+
+  def checklist
+    self.class.get_checklist(self)
+  end
+
+  module ClassMethods
+
+    # entry point
+    def checklist(&block)
+      @checklist ||= List.new self
+      @checklist.update(&block) if block_given?
+      @checklist
+    end
+
+    def get_checklist(context = nil)
+      @checklist.context = context
+      @checklist
+    end
+  end
+
+  def self.included(base)
+    base.extend(ClassMethods)
+  end
+end
