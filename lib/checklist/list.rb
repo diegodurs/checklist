@@ -63,7 +63,7 @@ module Checklist
 
     private
 
-    def it(explain, &block)
+    def check(explain, &block)
       @items << Item.new(explain, self, &block)
     end
 

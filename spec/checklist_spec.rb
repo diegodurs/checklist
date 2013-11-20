@@ -19,10 +19,10 @@ class TestingChecklist
   end
 
   checklist do
-    it "World should contains the world string" do
+    check "World should contains the world string" do
       world == "World"
     end
-    it "the truth" do
+    check "the truth" do
       @true == true
     end
   end
@@ -39,7 +39,7 @@ class TestingChecklist2
   end
 
   checklist do
-    it "World should contains the world string" do
+    check "World should contains the world string" do
       world == "Monde"
     end
   end
