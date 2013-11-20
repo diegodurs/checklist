@@ -43,28 +43,44 @@ module Checklist
     # each_checked do |explain, checked|
     #   puts "#{explain} = #{checked}"
     # end
-    def each_checked(&block)
-      items.each do |item|
+    def each_checked(options = {}, &block)
+      options = parse_options(options)
+      get_items(options).each do |item|
         block.call(item.explain, item.checked?)
       end
     end
 
-    def map_checked(&block)
-      if block_given?
-        items.map {|item| block.call(item.explain, item.checked?) }
-      else
-        items.map {|item| [item.explain, item.checked?] }
-      end
+    def map_checked(options = {}, &block)
+      options = parse_options(options)
+      block ||= lambda { |msg, checked| [msg, checked] }
+      items.map {|item| block.call(item.explain, item.checked?) }
     end
 
     def errors
       items.select { |item| !item.checked? }
     end
 
+    # items that should be checked
+    def filtered_items
+      items.select { |item| item.keep? }
+    end
+
     private
 
-    def check(explain, &block)
-      @items << Item.new(explain, self, &block)
+    def check(explain, item_options = {}, &block)
+      @items << Item.new(explain, self, item_options, &block)
+    end
+
+    def get_items(options)
+      options[:filtered] ? filtered_items : items
+    end
+
+    def default_options
+      { filtered: true }
+    end
+
+    def parse_options(options = {})
+      default_options.merge(options)
     end
 
   end

@@ -7,26 +7,7 @@
 # THE SOFTWARE.
 
 require_relative '../lib/checklist'
-
-class TestingChecklist
-  include Checklist
-
-  attr_accessor :world
-
-  def initialize
-    @world = "World"
-    @true = true
-  end
-
-  checklist do
-    check "World should contains the world string" do
-      world == "World"
-    end
-    check "the truth" do
-      @true == true
-    end
-  end
-end
+require_relative 'testing_checklist'
 
 # verify if there is no collapsing in the rules
 class TestingChecklist2
@@ -60,6 +41,34 @@ describe Checklist do
     it 'should not share items between classes' do
       instance.checklist.items.size.should == 2
       instance2.checklist.items.size.should == 1
+    end
+  end
+
+  describe 'filtered_items' do
+    context 'when only is set to true' do
+      it 'should return the item' do
+        instance.only = true
+        instance.checklist.filtered_items.map{|i| i.explain}.should include("the truth")
+      end
+    end
+
+    context 'when only is set to false' do
+      it 'should not return the item' do
+        instance.only = false
+        instance.checklist.filtered_items.map{|i| i.explain}.should_not include("the truth")
+      end
+    end
+    context 'when except is set to true' do
+      it 'should not return the item' do
+        instance.except = true
+        instance.checklist.filtered_items.map{|i| i.explain}.should_not include("World should contains the world string")
+      end
+    end
+    context 'when except is set to false' do
+      it 'should return the item' do
+        instance.except = false
+        instance.checklist.filtered_items.map{|i| i.explain}.should include("World should contains the world string")
+      end
     end
   end
 
