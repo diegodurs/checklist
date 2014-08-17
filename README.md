@@ -25,7 +25,7 @@ end
 
 ### Usage
 
-'''ruby
+```ruby
 user = User.new
 user.checklist.valid?
 
@@ -50,4 +50,4 @@ end
   </tr>
 </table>
 
-'''
+```
