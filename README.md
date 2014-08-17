@@ -8,7 +8,7 @@ Example
 -------
 
 ### Declaration
-
+```ruby
 class User
   include Checklist
 
@@ -21,7 +21,7 @@ class User
     end
   end
 end
-
+```
 
 ### Usage
 
