@@ -39,7 +39,8 @@ end
 user.checklist.each_checked do |msg, bool|
   puts "#{msg} - #{bool}"
 end
-
+```
+```html
 <table>
   <% user.checklist.each_checked do |message, checked| %>
   <tr>
